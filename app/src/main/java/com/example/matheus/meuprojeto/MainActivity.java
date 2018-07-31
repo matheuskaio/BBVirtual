@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -21,14 +22,17 @@ public class MainActivity extends AppCompatActivity {
     private LoginButton login;
     private CallbackManager callbackManager;
     private EditText editText;
+    private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initView();
     }
     private void initView(){
         login = findViewById(R.id.loginFacebook);
+        textView = findViewById(R.id.textView);
         login.setReadPermissions("email");
 
         callbackManager = CallbackManager.Factory.create();
@@ -64,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void getData(JSONObject object) {
         try{
-            editText.setText("nascimento = "+object.getString("birthday")+" Nome = "+object.getString("name"));
+            textView.setText("nascimento = "+object.getString("birthday")+" Nome = "+object.getString("name"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
