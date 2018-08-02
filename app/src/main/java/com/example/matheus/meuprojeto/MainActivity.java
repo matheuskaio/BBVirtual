@@ -3,6 +3,8 @@ package com.example.matheus.meuprojeto;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -30,23 +32,34 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+
+        Button btnNovaTela = findViewById(R.id.button3);
+        btnNovaTela.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent it = new Intent(MainActivity.this, CadastrarUsuario.class);
+                startActivity(it);
+            }
+        });
     }
     private void initView(){
         login = findViewById(R.id.loginFacebook);
         textView = findViewById(R.id.textView);
-        login.setReadPermissions("email");
 
         callbackManager = CallbackManager.Factory.create();
+
 
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
                         final String token = loginResult.getAccessToken().getToken();
+
                         GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                             @Override
                             public void onCompleted(JSONObject object, GraphResponse response) {
                                 getData(object);
+
                             }
                         });
                         Bundle parameters = new Bundle();
@@ -58,18 +71,20 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onCancel() {
                         // App code
+
                     }
 
                     @Override
                     public void onError(FacebookException exception) {
-                        // App code
+
                     }
                 });
     }
 
     private void getData(JSONObject object) {
         try{
-            textView.setText("nascimento = "+object.getString("birthday")+" Nome = "+object.getString("name"));
+            textView.setText("true");
+            textView.setText(" Nome = "+object.getString("name") + "nascimento = "+object.getString("birthday"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -79,4 +94,6 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
+
+
 }
